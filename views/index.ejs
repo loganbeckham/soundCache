@@ -1,12 +1,49 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- <script src="../app.js"></script> -->
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="app.js"></script>
     </head>
     <body>
         <div class="container">
+            <h1> SoundCache</h1>
+            <form>
+                <input type="text" placeholder="keyword"/>
+                <input type="submit" value="Get Samples!" />
+            </form>
+            <dl>
+                <dt>Name</dt>
+                <dd id="name"></dd>
             
+                <dt>Preview</dt>
+                <dd id="preview"></dd>
+            
+                <dt>Username</dt>
+                <dd id="username"></dd>
+            </dl>
         </div>
+        <script>
+        $('form').on('submit', (event)=> {
+
+            event.preventDefault();
+        
+            const userInput = $('input[type="text"]').val();
+        
+            $.ajax({
+                url:'https://freesound.org/apiv2/search/text/?query=' + userInput + '&fields=name,previews&token=ZDVZ805OUqVQk3TWEQ36CU9jC1eldzKvwPzYzAtZ'
+            }).then(
+                (data)=>{
+                    console.log(data.results[0].previews["preview-hq-mp3"]);
+                    // for (let i=0; i<data.results.length; i++) {}
+                    $('#name').html(data.results[0].name).text(data.results[0].name);
+                    $('#preview').html(data.results[0].previews["preview-hq-mp3"]).text(data.results[0].previews["preview-hq-mp3"]);
+                    $('#username').html(data.results[0].username);;
+                },
+                ()=>{
+                    console.log('bad request');
+                }
+            );
+        })
+        </script>
     </body>
 </html>
