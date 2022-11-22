@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const app = express();
 const jquery = require('jquery');
 
+app.use(express.static('public'));
+
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.use(express.static('public'));
 
 
 let PORT = 3000;
