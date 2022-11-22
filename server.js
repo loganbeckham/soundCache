@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const jquery = require('jquery');
 
 app.use(express.static('public'));
 
@@ -14,9 +13,14 @@ if(process.env.PORT){
 	PORT = process.env.PORT
 }
 
+// Home Page
 app.get('/', (req, res)=>{
 	res.render('index.ejs');
 })
+
+// Index Route
+
+// Show Route
 
 app.listen(PORT, ()=>{
 	console.log('listening');
