@@ -1,8 +1,7 @@
 $(()=> {
 
-    // Collection Hold Array
+    // Empty Array for export to database
     let collection = [];
-
 
     // Generate Samples from API
     $('form').on('submit', (event)=> {
@@ -15,6 +14,8 @@ $(()=> {
             url:'https://freesound.org/apiv2/search/text/?query=' + userInput + '&fields=name,previews&token=ZDVZ805OUqVQk3TWEQ36CU9jC1eldzKvwPzYzAtZ'
         }).then(
             (data)=>{
+
+                $('.row').empty();
 
                 for (let i = 0; i < data.results.length; i++) {
 
