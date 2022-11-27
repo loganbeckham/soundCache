@@ -1,10 +1,10 @@
 $(()=> {
 
     // Empty Array for export to database
-    let collection = [];
+    // exports.collection = [];
 
     // Generate Samples from API
-    $('form').on('submit', (event)=> {
+    $('form').on('submit', (event) => {
 
         event.preventDefault();
     
@@ -13,7 +13,7 @@ $(()=> {
         $.ajax({
             url:'https://freesound.org/apiv2/search/text/?query=' + userInput + '&fields=name,previews&token=ZDVZ805OUqVQk3TWEQ36CU9jC1eldzKvwPzYzAtZ'
         }).then(
-            (data)=>{
+            (data) => {
 
                 $('.row').empty();
 
@@ -24,9 +24,11 @@ $(()=> {
                     const $cardBody = $('<div>').addClass('card-body text-center').css({'height': "175px"})
                     const $cardName = $('<h5>').addClass('card-title pt-3')
                     const $cardPreview = $('<audio controls>')
-                    const $addBtn = $('<button>').addClass('btn').text('Add to Collection').attr('id', `btn${i}`)
+                    const $postForm = $('<form>').attr('action', '/save').attr('method', 'post').attr('id', `saveToCollection${i}`)
+                    const $addBtn = $('<button>').addClass('btn').text('Add to Collection').attr('id', `btn${i}`).attr('type', 'submit')
 
-                    $cardBody.append($cardName, $cardPreview, $addBtn)
+                    $cardBody.append($cardName, $cardPreview, $postForm)
+                    $postForm.append($addBtn)
                     $card.append($cardBody)
                     $col.append($card)
                     $('.row').append($col)
@@ -34,16 +36,37 @@ $(()=> {
                     $cardName.text(data.results[i].name)
                     $cardPreview.attr("src", data.results[i].previews["preview-hq-mp3"])
 
+
                     // Add to Collection function
-                    $(`#btn${i}`).on("click", function() {
-                        let thisSample = {
-                            name: data.results[i].name,
-                            preview: data.results[i].previews["preview-hq-mp3"]
-                        }
-                        collection.push(thisSample);
-                        alert('added to collection');
-                        console.log(collection)
-                    })
+
+                    $(`#btn${i}`).on('click', function() {
+                        $.ajax({
+                            url: '/save',
+                            type: 'POST',
+                            data: {
+                                'name': data.results[i].name,
+                                'preview': data.results[i].previews["preview-hq-mp3"]
+                            },
+                            // success: function(data) {
+                            //     console.log(collec)
+                            // }
+                        })
+
+
+                        // $.post('/save', {
+                        //     samples: thisSample
+                        // }, function() {
+                        //     console.log(samples)
+                        // })
+
+                    });
+
+
+
+                        // collection.push(thisSample);
+                        // alert('added to collection');
+                        // console.log(collection)
+
                 }
 
                 console.log(data.next);
@@ -71,6 +94,10 @@ $(()=> {
         }
     }, true);
 
+    // Export Collection Array
+
 })
+
+
 
 // $('#name').html(data.results[0].name).text(data.results[0].name);
