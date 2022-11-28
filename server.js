@@ -2,38 +2,71 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 
 const Sample = require('./models/mySamples.js');
+const Collection = require('./models/myCollections.js')
 // const userController = require('./controllers/users_controller.js')
 // app.use('/users', userController)
 
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(methodOverride('_method'));
 
 
 // Index Post
 app.post('/save', (req, res) => {
 	Sample.create(req.body, (err, savedSample) => {
-		res.redirect('/')
+		res.redirect('/collection')
 	})
 })
 
-// Index Page
+// Home Page
 app.get('/', (req, res)=>{
 	res.render('index.ejs');
 })
 
 // Show Route
-app.get('/collection', (req, res) => {
+app.get('/collection', getSamples, getCollections, renderForm) 
+
+// Show Route Functions
+function getSamples(req, res, next) {
 	Sample.find({}, (err, sampleList) => {
-		res.render(
-			'show.ejs',
-			{
-				Sample: sampleList
-			}
-		)
-	})
+	res.locals.Sample = sampleList;
+	next();
+	});
+};
+
+function getCollections(req, res, next) {
+	Collection.find({}, (err, collectionList) => {
+	res.locals.Collection = collectionList;
+	next();
+	});
+};
+
+function renderForm(req, res) {
+	res.render('show.ejs');
+}
+
+
+
+// (req, res) => {
+// 	Sample.find({}, (err, sampleList) => {
+// 		res.render(
+// 			'show.ejs',
+// 			{
+// 				Sample: sampleList
+// 			}
+// 		)
+// 	})
+// })
+
+// DELETE Route
+app.delete('/collection/:id', (req, res) => {
+    Sample.findByIdAndRemove(req.params.id, (err, data) => {
+        res.redirect('/collection');
+    });
 })
 
 //////////////////////////////

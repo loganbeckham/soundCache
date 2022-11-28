@@ -9,13 +9,18 @@
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
             <div class="container-fluid">
                 <a class="navbar-brand ms-1" href="/">SoundCache</a>
-                <form class="d-flex" id="navSearch">
-                    <input class="form-control me-2 my-3" type="text" placeholder="keyword"/>
-                    <button class="btn btn-outline-primary my-3" style="min-width: 125px" type="submit">Get Samples!</button>
-                </form>
+                <div class="d-flex">
+                    <a class="me-2" href="/collection" style="text-decoration: none; color: black">My Collection</a>
+                </div>
             </div>
         </nav>
         <div class="container">
+            <div class="d-flex flex-row pt-3 justify-content-center">
+            <form class="d-inline-flex" style="max-width: 100vw;" id="navSearch">
+                <input class="form-control me-2 my-3" style="min-width: 40vw;" type="text" placeholder="Search Free Samples"/>
+                <button class="btn btn-outline-primary my-3" style="min-width: 125px" type="submit">search</button>
+            </form>
+            </div>
 
             <div class="row">
 
