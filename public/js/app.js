@@ -1,81 +1,56 @@
 $(()=> {
 
-    // Empty Array for export to database
-    // exports.collection = [];
-
-    // Generate Samples from API
+    // On Search, Generate Samples from API
     $('#navSearch').on('submit', (event) => {
 
         event.preventDefault();
     
+        // Variable to Store User Input in Search Box
         const userInput = $('input[type="text"]').val();
     
         $.ajax({
+            // API Token with User Input Inserted
             url:'https://freesound.org/apiv2/search/text/?query=' + userInput + '&fields=name,previews&token=ZDVZ805OUqVQk3TWEQ36CU9jC1eldzKvwPzYzAtZ'
         }).then(
             (data) => {
 
+                // Clear Container On Search
                 $('.row').empty();
 
+                // Loop Through Results
                 for (let i = 0; i < data.results.length; i++) {
 
+                    // Generate Cards with Queried API Data
                     const $col = $('<div>').addClass('col-12 col-md-6 col-lg-4')
                     const $card = $('<div>').addClass(`card border-primary my-4`).css({'min-width': '350px'})
                     const $cardBody = $('<div>').addClass('card-body text-center').css({'height': "175px"})
                     const $cardName = $('<h5>').addClass('card-title pt-3')
                     const $cardPreview = $('<audio controls>')
-                    const $postForm = $('<form>').attr('action', '/save').attr('method', 'post').attr('id', `saveToCollection${i}`)
+
+                    // Create Form Elements with Hidden Data Values
+                    const $postForm = $('<form>').attr('action', '/save').attr('method', 'POST').attr('id', `saveToCollection${i}`)
+                    const $postName = $('<input>').attr('type', 'hidden').attr('name', 'name').attr('value', `${data.results[i].name}`)
+                    const $postPreview = $('<input>').attr('type', 'hidden').attr('name', 'preview').attr('value', `${data.results[i].previews["preview-hq-mp3"]}`)
                     const $addBtn = $('<button>').addClass('btn').text('Add to Collection').attr('id', `btn${i}`).attr('type', 'submit')
 
+                    // Append All Elements to DOM
                     $cardBody.append($cardName, $cardPreview, $postForm)
-                    $postForm.append($addBtn)
+                    $postForm.append($postName, $postPreview, $addBtn)
                     $card.append($cardBody)
                     $col.append($card)
                     $('.row').append($col)
 
+                    // Display Name and Preview for Each Element
                     $cardName.text(data.results[i].name)
                     $cardPreview.attr("src", data.results[i].previews["preview-hq-mp3"])
-
-
-                    // Add to Collection function
-
-                    $(`#saveToCollection${i}`).on('submit', function() {
-                        $.ajax({
-                            url: '/save',
-                            type: 'POST',
-                            data: {
-                                'name': data.results[i].name,
-                                'preview': data.results[i].previews["preview-hq-mp3"]
-                            },
-                            // success: function() {
-                            //     console.log(data.results[i].name)
-                            // }
-                        })
-
-
-                        // $.post('/save', {
-                        //     samples: thisSample
-                        // }, function() {
-                        //     console.log(samples)
-                        // })
-
-                    });
-
-
-
-                        // collection.push(thisSample);
-                        // alert('added to collection');
-                        // console.log(collection)
-
                 }
 
-                console.log(data.next);
+                // Next Page Button 
+                // console.log(data.next);
 
                 // const $nextPage = $('<button>').addClass('btn btn-danger')
                 // $('.container').append($nextPage)
                 // $nextPage.attr("type", "button").attr("onclick", data.next)
-
-
             },
             ()=>{
                 console.log('bad request');
