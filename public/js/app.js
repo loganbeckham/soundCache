@@ -4,7 +4,7 @@ $(()=> {
     // exports.collection = [];
 
     // Generate Samples from API
-    $('form').on('submit', (event) => {
+    $('#navSearch').on('submit', (event) => {
 
         event.preventDefault();
     
@@ -39,7 +39,7 @@ $(()=> {
 
                     // Add to Collection function
 
-                    $(`#btn${i}`).on('click', function() {
+                    $(`#saveToCollection${i}`).on('submit', function() {
                         $.ajax({
                             url: '/save',
                             type: 'POST',
@@ -47,8 +47,8 @@ $(()=> {
                                 'name': data.results[i].name,
                                 'preview': data.results[i].previews["preview-hq-mp3"]
                             },
-                            // success: function(data) {
-                            //     console.log(collec)
+                            // success: function() {
+                            //     console.log(data.results[i].name)
                             // }
                         })
 
