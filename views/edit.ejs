@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include ('../partials/head.ejs') %>
+    </head>
+    <body>
+        <%- include ('../partials/nav.ejs') %>
+        <div class="container">
+            <h1 class="title pt-3">Edit <%= Collection.collectionName %></h1>
+            <form action="/<%=Collection.id%>?_method=PUT" method="POST">
+                <input class="mb-2" type="text" name="collectionName" value="<%=Collection.collectionName%>" /><br/>
+                <input class="mb-2" type="text" name="collectionImage" value="<%=Collection.collectionImage%>" /><br/>
+                <input class="btn btn-success mb-2" type="submit" value="Save Info"/>
+            </form>
+            <a href="/collections"><button class="btn btn-success mb-2">Back to Collections</button></a>
+        </div>
+    </body>
+
+</html>
