@@ -1,30 +1,24 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <%- include ('../partials/head.ejs') %>
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-            <div class="container-fluid">
-                <a class="navbar-brand ms-1" href="/">SoundCache</a>
-                <div class="d-flex">
-                    <a class="me-2" href="/collection" style="text-decoration: none; color: black">My Collection</a>
-                </div>
-            </div>
-        </nav>
+        <%- include ('../partials/nav.ejs') %>
         <div class="container">
-            <h1 class="title pt3">My Collections</h1>
-            <button class="btn btn-info p-2 ml-3" style="min-width: 100px;" onclick="location.href='/collection/create'">+</button>
+            <h1 class="title pt-3">My Collections</h1>
+            <button class="btn btn-info p-2 ml-3" style="min-width: 100px;" onclick="location.href='/create'">Add Collection</button>
                 <div class="row">
-                    <% for (let i = 0; i < Collection.length; i++) { %>
+                    <% for (let i = 0; i < Collection.length; i++) { console.log(Collection[0])%>
                         <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card border-primary my-4" style="min-width: 350px">
+                            <div class="card border-primary my-4" style="min-width: 250px; max-width: 250px;">
+                                <img src="<%= Collection[i].collectionImage %>" class="card-img-top">
                                 <div class="card-body text-center" style="height: 175px">
-                                    <h5 class="card-title pt3"> <%= Collection[i].name %> </h5>
-                                    <form action="/collection/<%= Sample[i].id%>?_method=DELETE" method="POST">
-                                        <input class="btn btn-danger mb-3" type="submit" value="Delete Sample">
+                                    <h5 class="card-title pt-3"> <%= Collection[i].collectionName %> </h5>
+                                    <form action="/collection/<%= Collection[i].id%>?_method=DELETE" method="POST">
+                                        <input class="btn btn-danger mb-3" type="submit" value="Delete Collection">
                                     </form>
+
                                 </div>
                             </div>
                         </div>

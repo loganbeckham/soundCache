@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include ('../partials/head.ejs') %>
+    </head>
+    <body>
+        <%- include ('../partials/nav.ejs') %>
+        <div class="container">
+            <h1 class="title pt-3">Create Collection</h1>
+            <form action="/create" method="POST">
+                <input class="mb-2" type="text" name="collectionName" placeholder="Name Your Collection" /><br/>
+                <input class="mb-2" type="text" name="collectionImage" placeholder="Link a Cover Photo" /><br/>
+                <input class="btn btn-success mb-2" type="submit" value="Create Collection"/>
+            </form>
+            <a href="/collection"><button class="btn btn-success mb-2">Back to Collections</button></a>
+        </div>
+    </body>
+
+</html>

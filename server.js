@@ -22,10 +22,17 @@ app.post('/save', (req, res) => {
 	})
 })
 
+app.post('/create', (req, res) => {
+	Collection.create(req.body, (err, savedCollection) => {
+		res.redirect('/collection')
+	})
+})
+
 // Home Page
 app.get('/', (req, res)=>{
 	res.render('index.ejs');
 })
+
 
 // Show Route
 app.get('/collection', getSamples, getCollections, renderForm) 
@@ -50,17 +57,10 @@ function renderForm(req, res) {
 }
 
 
-
-// (req, res) => {
-// 	Sample.find({}, (err, sampleList) => {
-// 		res.render(
-// 			'show.ejs',
-// 			{
-// 				Sample: sampleList
-// 			}
-// 		)
-// 	})
-// })
+// CREATE Route
+app.get('/create', (req, res) => {
+	res.render('create.ejs');
+})
 
 // DELETE Route
 app.delete('/collection/:id', (req, res) => {
