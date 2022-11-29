@@ -1,4 +1,8 @@
 $(()=> {
+    
+    // Carry JSON Variable over from EJS file
+    let Collection = JSON.parse($('#variableJSON').text());
+    $('#variableJSON').remove();
 
     // On Search, Generate Samples from API
     $('#navSearch').on('submit', (event) => {
@@ -32,9 +36,23 @@ $(()=> {
                     const $postName = $('<input>').attr('type', 'hidden').attr('name', 'name').attr('value', `${data.results[i].name}`)
                     const $postPreview = $('<input>').attr('type', 'hidden').attr('name', 'preview').attr('value', `${data.results[i].previews["preview-hq-mp3"]}`)
                     const $addBtn = $('<button>').addClass('btn').text('Add to Collection').attr('id', `btn${i}`).attr('type', 'submit')
+                    const $dropDiv = $('<div>').addClass('dropdown')
+                    const $ul = $('<ul>').addClass('dropdown-menu').attr('aria-labelledby', 'dropdownMenuButton1')
+                    const $dropButton = $('<button>').addClass('btn btn-secondary dropdown-toggle').attr('type', 'button').attr('id', 'dropdownMenuButton1').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Add to Collection')
+
+
+                    // Create Dropdown Menu Element for each
+                    for (let i = 0; i < Collection.length; i++) {
+                        const $li = $('<li>')
+                        const $a = $('<a>').addClass('dropdown-item').attr('href', '#').text(`${Collection[i].collectionName}`)
+                        $li.append($a)
+                        $ul.append($li)
+                        $dropDiv.append($dropButton)
+                    }
 
                     // Append All Elements to DOM
-                    $cardBody.append($cardName, $cardPreview, $postForm)
+                    $dropDiv.append($ul)
+                    $cardBody.append($cardName, $cardPreview, $dropDiv)
                     $postForm.append($postName, $postPreview, $addBtn)
                     $card.append($cardBody)
                     $col.append($card)

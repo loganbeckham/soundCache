@@ -2,7 +2,8 @@
 <html>
     <head>
         <%- include ('../partials/head.ejs') %>
-        <script src="js/app.js"></script>
+        <script src="js/app.js">
+        </script>
     </head>
     <body>
         <%- include ('../partials/nav.ejs') %>
@@ -31,4 +32,7 @@
             </dl> -->
         </div>
     </body>
+    <span id='variableJSON' hidden>
+        <%= JSON.stringify(Collection); %>
+    </span>
 </html>

@@ -63,7 +63,13 @@ app.put('/:id', (req, res) => {
 
 // HOMEPAGE
 app.get('/', (req, res)=>{
-	res.render('index.ejs');
+	Collection.find({}, (err,collectionList) => {
+		res.render('index.ejs',
+			{
+				Collection: collectionList
+			}
+		)
+	})
 })
 
 // CACHE
@@ -108,9 +114,9 @@ app.get('/:id/edit', (req, res) => {
 ////////////////////
 
 // DELETE COLLECTION
-app.delete('/collection/:id', (req, res) => {
+app.delete('/collections/:id', (req, res) => {
     Sample.findByIdAndRemove(req.params.id, (err, data) => {
-        res.redirect('/collection');
+        res.redirect('/collections');
     });
 })
 
