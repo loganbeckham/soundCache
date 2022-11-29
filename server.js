@@ -30,12 +30,12 @@ app.use(methodOverride('_method'));
 // POST ROUTES
 ////////////////////
 
-// save samples
-app.post('/save', (req, res) => {
-	Sample.create(req.body, (err, savedSample) => {
-		res.redirect('/collection')
-	})
-})
+// // save samples
+// app.post('/save', (req, res) => {
+// 	Sample.create(req.body, (err, savedSample) => {
+// 		res.redirect('/collection')
+// 	})
+// })
 
 // create collections
 app.post('/create', (req, res) => {
@@ -48,6 +48,20 @@ app.post('/create', (req, res) => {
 ////////////////////
 // PUT ROUTES
 ////////////////////
+
+// add to collection
+app.put('/addTo/:id', (req, res) => {
+	Collection.findByIdAndUpdate(req.params.id, {
+		$push: {
+			'collectionSamples': {
+				name: req.body.name,
+				preview: req.body.preview
+			},
+		},
+	}, {new:true}, (err, updatedModel) => {
+		res.redirect('/collections')
+	})
+})
 
 // rename collection
 app.put('/:id', (req, res) => {

@@ -1,6 +1,6 @@
 $(()=> {
     
-    // Carry JSON Variable over from EJS file
+    // Carry JSON Variable over from EJS file https://stackoverflow.com/questions/46539106/accessing-passed-ejs-variable-in-javascript-file
     let Collection = JSON.parse($('#variableJSON').text());
     $('#variableJSON').remove();
 
@@ -32,28 +32,39 @@ $(()=> {
                     const $cardPreview = $('<audio controls>')
 
                     // Create Form Elements with Hidden Data Values
-                    const $postForm = $('<form>').attr('action', '/save').attr('method', 'POST').attr('id', `saveToCollection${i}`)
-                    const $postName = $('<input>').attr('type', 'hidden').attr('name', 'name').attr('value', `${data.results[i].name}`)
-                    const $postPreview = $('<input>').attr('type', 'hidden').attr('name', 'preview').attr('value', `${data.results[i].previews["preview-hq-mp3"]}`)
-                    const $addBtn = $('<button>').addClass('btn').text('Add to Collection').attr('id', `btn${i}`).attr('type', 'submit')
                     const $dropDiv = $('<div>').addClass('dropdown')
                     const $ul = $('<ul>').addClass('dropdown-menu').attr('aria-labelledby', 'dropdownMenuButton1')
                     const $dropButton = $('<button>').addClass('btn btn-secondary dropdown-toggle').attr('type', 'button').attr('id', 'dropdownMenuButton1').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Add to Collection')
 
 
                     // Create Dropdown Menu Element for each
-                    for (let i = 0; i < Collection.length; i++) {
+                    for (let x = 0; x < Collection.length; x++) {
                         const $li = $('<li>')
-                        const $a = $('<a>').addClass('dropdown-item').attr('href', '#').text(`${Collection[i].collectionName}`)
-                        $li.append($a)
+                        const $putForm = $('<form>').attr('action', `/addTo/${Collection[x]._id}?_method=PUT`).attr('method', 'POST')
+                        const $putName = $('<input>').attr('type', 'hidden').attr('name', 'name').attr('value', `${data.results[i].name}`)
+                        const $putPreview = $('<input>').attr('type', 'hidden').attr('name', 'preview').attr('value', `${data.results[i].previews["preview-hq-mp3"]}`)
+                        const $addToButton = $('<button>').addClass('dropdown-item').attr('type', 'submit').attr('id', `addToButton${x}`).text(`${Collection[x].collectionName}`)
+                        $putForm.append($putName, $putPreview, $addToButton)
+                        $li.append($putForm)
                         $ul.append($li)
                         $dropDiv.append($dropButton)
+
+                        // $addToButton.on('click', () => {
+                        //     Collection[x].collectionSamples.push(
+                        //         {
+                        //             name: `${data.results[i].name}`,
+                        //             preview: `${data.results[i].previews["preview-hq-mp3"]}`
+                        //         }
+                        //     )
+                        //     console.log(Collection[x])
+                        // })
                     }
+
 
                     // Append All Elements to DOM
                     $dropDiv.append($ul)
                     $cardBody.append($cardName, $cardPreview, $dropDiv)
-                    $postForm.append($postName, $postPreview, $addBtn)
+                    // $postForm.append($postName, $postPreview, $addBtn)
                     $card.append($cardBody)
                     $col.append($card)
                     $('.row').append($col)
