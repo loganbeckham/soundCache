@@ -52,8 +52,9 @@ router.put('/addTo/:id', (req, res) => {
 })
 
 // rename collection
-router.put('/:id', (req, res) => {
-	Collection.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedModel) => {
+router.put('/collections/:id', (req, res) => {
+	Collection.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, thisCollection) => {
+		console.log(req.body)
 		res.redirect('/collections')
 	})
 })
@@ -127,17 +128,6 @@ router.get('/:id', (req, res) => {
 				currentUser: req.session.currentUser
 			}
 		)
-	})
-})
-
-// EDIT COLLECTION
-router.get('/:id/edit', (req, res) => {
-	Collection.findById(req.params.id, (err, thisCollection) => {
-		res.render('edit.ejs',
-		{
-			Collection: thisCollection,
-			currentUser: req.session.currentUser
-		})
 	})
 })
 

@@ -4,14 +4,13 @@
         <div class="d-flex">
             <a class="me-4" href="/" style="text-decoration: none; color: black">Search</a>
             <% if (currentUser) { %>
-            <a class="me-2" href="/collections" style="text-decoration: none; color: black">My Collections</a>
-            <form action="/sessions?_method=DELETE" method="POST">
-                <a class="me-2" style="text-decoration: none; color: black">
-                <input type="submit" value="Log Out" style="border: none; background-color: none;" />
-                </a>
+            <a class="me-4" href="/collections" style="text-decoration: none; color: black">My Collections</a>
+            <form id="logOut" action="/sessions?_method=DELETE" method="POST">
+                <a href="#" class="me-4" onclick="document.getElementById('logOut').submit()" style="text-decoration: none; color: black">Log Out</a>
+                <!-- <input type="submit" value="Log Out" style="border: none; background-color: none;" /> -->
             </form>
             <% } else { %>
-            <a class="me-2" href="/sessions/new" style="text-decoration: none; color: black">Log In</a>
+            <a class="me-4" href="/sessions/new" style="text-decoration: none; color: black">Log In</a>
             <% } %>
         </div>
     </div>
