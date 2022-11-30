@@ -6,10 +6,14 @@
     <body>
         <%- include ('../partials/nav.ejs') %>
         <div class="container">
-            <!-- <h1 class="title pt-3">My Collections</h1> -->
+            <div class="pt-3 d-flex">
+                <h1 class="title p-2">My Collections</h1>
 
-            <!-- Add Collection Button -->
-            <button class="btn btn-info p-2 mt-4 ml-3" style="min-width: 100px;" onclick="location.href='/create'">Add Collection</button>
+                <!-- Add Collection Button -->
+                <button class="btn btn-info m-3 ml-3" style="min-width: 100px;" onclick="location.href='/create'">+ Add Collection</button>
+
+            </div>
+
                 
                 <!-- Generate Card for Each Collection -->
                 <div class="row">

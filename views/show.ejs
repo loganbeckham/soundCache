@@ -7,7 +7,10 @@
         <%- include ('../partials/nav.ejs') %>
 
         <div class="container">
-            <h1 class="title pt-3"><%=Collection.name%></h1>
+            <div class="pt-3 d-flex">
+                <h1 class="title p-2"><%=Collection.collectionName%></h1>
+                <button class="btn btn-info m-3 ml-3" style="min-width: 100px;" onclick="location.href='/Collections'">Back to My Collections</button>
+            </div>
 
                 <!-- Generate Card for Each Sample in Collection -->
                 <div class="row">
