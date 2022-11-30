@@ -3,6 +3,9 @@ const express = require('express')
 const sessions = express.Router()
 const User = require('../models/users.js')
 
+
+// SIGN IN
+
 sessions.get('/new', (req, res) => {
   res.render('sessions/new.ejs', 
     { 
@@ -47,6 +50,9 @@ sessions.post('/', (req, res) => {
     }
   })
 })
+
+
+// LOG OUT 
 
 sessions.delete('/', (req, res) => {
   req.session.destroy(() => {

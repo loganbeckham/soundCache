@@ -3,6 +3,8 @@ const express = require('express')
 const users = express.Router()
 const User = require('../models/users.js')
 
+
+// CREATE NEW ACCOUNT
 users.get('/new', (req, res) => {
   res.render('users/new.ejs', 
   { 
