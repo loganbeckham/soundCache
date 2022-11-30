@@ -22,11 +22,20 @@
                         <div class="col-6 col-md-4 col-lg-3 col-xl-2">
                             <div class="card border-primary my-4 h-100">
                                 <a href="/<%=Collection[i]._id%>"> <img src="<%= Collection[i].collectionImage %>" class="card-img-top"></a>
-                                <div class="card-body text-center d-flex flex-wrap">
+                                <div class="card-body text-center d-flex flex-wrap justify-content-center">
                                     <a href="/<%=Collection[i]._id%>" class="w-100" style="text-decoration: none; color: black;"><h5 class="card-title pt-3"> <%= Collection[i].collectionName %></h5></a>
+                                    <% if (Collection[i].collectionSamples.length === 1) { %>
+                                        <p>
+                                            <%=Collection[i].collectionSamples.length%> sound
+                                        </p>
+                                    <% } else {%>
+                                        <p>
+                                        <%=Collection[i].collectionSamples.length%> sounds
+                                        </p> 
+                                    <% } %>
                                     <div class="d-flex justify-content-evenly w-100">
                                         <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Edit
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -34,13 +43,13 @@
                                                     <form action="/collections/<%=Collection[i]._id%>?_method=PUT" method="POST">
                                                         <input class="mb-2 m-3" type="text" name="collectionName" value="<%=Collection[i].collectionName%>"/><br/>
                                                         <input class="mb-2 m-3" type="text" name="collectionImage" value="<%=Collection[i].collectionImage%>"/><br/>
-                                                        <input class="dropdown-item" type="submit" value="Submit"/> 
+                                                        <input class="dropdown-item" type="submit" value="Update"/> 
                                                     </form>
                                                 </li>
                                             </ul>
                                         </div>
                                         <form action="/collections/<%=Collection[i]._id%>?_method=DELETE" method="POST">
-                                            <input class="btn btn-danger" type="submit" value="Delete">
+                                            <input class="btn btn-outline-danger" type="submit" value="Delete">
                                         </form>
                                         <!-- <button class="btn btn-primary" onclick="location.href='/<%=Collection[i]._id%>/edit'">Edit</button> -->
                                     </div>

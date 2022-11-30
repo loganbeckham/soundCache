@@ -1,12 +1,17 @@
+// =======================================
+//              DEPENDENCIES
+// =======================================
+
 const express = require('express');
 const router = express.Router();
-
 
 // =======================================
 //              DATABASE
 // =======================================
-const Sample = require('../models/mySamples.js');
+
+// const Sample = require('../models/mySamples.js');
 const Collection = require('../models/myCollections.js');
+// const seed = require('../models/seed.js')
 
 
 // =======================================
@@ -14,18 +19,29 @@ const Collection = require('../models/myCollections.js');
 // =======================================
 
 
+// ////////////////////
+// // SEED ROUTE
+// ////////////////////
+
+// router.get('/seed', (req, res) => {
+// 	Collection.create(seed, (err, addCollection) => {
+// 		res.send(addCollection);
+// 	})
+// })
+
+
 ////////////////////
 // POST ROUTES
 ////////////////////
 
-// // save samples
+// // SAVE SAMPLES
 // app.post('/save', (req, res) => {
 // 	Sample.create(req.body, (err, savedSample) => {
 // 		res.redirect('/collection')
 // 	})
 // })
 
-// create collections
+// CREATE COLLECTION
 router.post('/create', (req, res) => {
 	Collection.create(req.body, (err, savedCollection) => {
 		res.redirect('/collections')
@@ -37,7 +53,7 @@ router.post('/create', (req, res) => {
 // PUT ROUTES
 ////////////////////
 
-// add to collection
+// ADD TO COLLECTION
 router.put('/addTo/:id', (req, res) => {
 	Collection.findByIdAndUpdate(req.params.id, {
 		$push: {
@@ -51,7 +67,7 @@ router.put('/addTo/:id', (req, res) => {
 	})
 })
 
-// rename collection
+// RENAME COLLECTION
 router.put('/collections/:id', (req, res) => {
 	Collection.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, thisCollection) => {
 		console.log(req.body)
@@ -59,22 +75,15 @@ router.put('/collections/:id', (req, res) => {
 	})
 })
 
-// rename sample
+// RENAME SAMPLE
 router.put('/:id/:index', (req, res) => {
-	Collection.findByIdAndUpdate(
+	Collection.findOneAndUpdate(
 		{
 			_id: req.params.id,
-			collectionSamples: 
-				{
-					_id: req.params.index
-				},
+			'collectionSamples._id': req.params.index
 		},
 		{
-			$set: {
-				'collectionSamples': {
-					name: req.body.name,
-				}
-			}
+			$set : {'collectionSamples.$.name': req.body.name}
 		}, {new: true}, (err, updatedModel) => {
 			res.redirect(`/${req.params.id}`)
 		}
@@ -155,7 +164,6 @@ router.delete('/:id/:index', (req, res) => {
 		res.redirect(`/${req.params.id}`)
 	})
 })
-
 
 
 module.exports = router;

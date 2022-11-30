@@ -25,13 +25,14 @@ $(()=> {
                 for (let i = 0; i < data.results.length; i++) {
 
                     // Generate Cards with Queried API Data
-                    const $col = $('<div>').addClass('col-12 col-md-6 col-lg-4')
-                    const $card = $('<div>').addClass(`card border-primary my-4`).css({'min-width': '350px'})
+                    const $col = $('<div>').addClass('col-12 col-md-6 col-lg-6 col-xl-4')
+                    const $card = $('<div>').addClass(`card border-primary my-4 `).css({'min-width': '350px'})
                     const $cardBody = $('<div>').addClass('card-body text-center').css({'height': "175px"})
-                    const $cardName = $('<h5>').addClass('card-title pt-3')
+                    const $cardName = $('<h5>').addClass('card-title pt-1')
                     const $cardPreview = $('<audio controls>')
 
                     // Create 'Add to Collection' Drop Down Menu
+                    const $dropBox = $('<div>').addClass('d-flex justify-content-center pt-2')
                     const $dropDiv = $('<div>').addClass('dropdown')
                     const $ul = $('<ul>').addClass('dropdown-menu').attr('aria-labelledby', 'dropdownMenuButton1')
                     const $dropButton = $('<button>').addClass('btn btn-secondary dropdown-toggle').attr('type', 'button').attr('id', 'dropdownMenuButton1').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Add to Collection')
@@ -53,7 +54,8 @@ $(()=> {
 
                     // Append Drop Menus to Cards / Cards to Card-Container / Card-Container to Container
                     $dropDiv.append($ul)
-                    $cardBody.append($cardName, $cardPreview, $dropDiv)
+                    $dropBox.append($dropDiv)
+                    $cardBody.append($cardName, $cardPreview, $dropBox)
 
                     $card.append($cardBody)
                     $col.append($card)
