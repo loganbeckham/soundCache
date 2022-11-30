@@ -23,7 +23,7 @@
                                     <audio controls src=" <%=Collection.collectionSamples[i].preview%> "></audio>
                                     <div class="d-flex justify-content-center pt-2">
                                         <div class="dropdown">
-                                            <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Rename
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -35,9 +35,9 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <button class="btn btn-outline-primary mb-3 mx-3" onclick="location.href=''">Move</button>
+                                        <button class="btn btn-primary mb-3 mx-3" onclick="location.href=''">Move</button>
                                         <form action="/<%=Collection._id%>/<%=Collection.collectionSamples[i]._id%>?_method=DELETE" method="POST">
-                                            <input class="btn btn-outline-danger mb-3" type="submit" value="Delete">
+                                            <input class="btn btn-danger mb-3" type="submit" value="Delete">
                                         </form>
                                     </div>
                                 </div>

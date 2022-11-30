@@ -63,7 +63,7 @@ router.put('/addTo/:id', (req, res) => {
 			},
 		},
 	}, {new:true}, (err, updatedModel) => {
-		res.redirect('/')
+		res.redirect('/collections')
 	})
 })
 
