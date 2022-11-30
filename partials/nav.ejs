@@ -3,7 +3,16 @@
         <a class="navbar-brand ms-1" href="/">SoundCache</a>
         <div class="d-flex">
             <a class="me-4" href="/" style="text-decoration: none; color: black">Search</a>
+            <% if (currentUser) { %>
             <a class="me-2" href="/collections" style="text-decoration: none; color: black">My Collections</a>
+            <form action="/sessions?_method=DELETE" method="POST">
+                <a class="me-2" style="text-decoration: none; color: black">
+                <input type="submit" value="Log Out" style="border: none; background-color: none;" />
+                </a>
+            </form>
+            <% } else { %>
+            <a class="me-2" href="/sessions/new" style="text-decoration: none; color: black">Log In</a>
+            <% } %>
         </div>
     </div>
 </nav>

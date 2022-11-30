@@ -5,63 +5,50 @@
     </head>
     <body>
         <%- include ('../partials/nav.ejs') %>
+
         <div class="container">
-            <!-- <h1 class="title pt-3">My Collections</h1> -->
-            <button class="btn btn-info p-2 mt-4 ml-3" style="min-width: 100px;" onclick="location.href='/create'">Add Collection</button>
+            <h1 class="title pt-3"><%=Collection.name%></h1>
+
+                <!-- Generate Card for Each Sample in Collection -->
                 <div class="row">
-                    <% for (let i = 0; i < Collection.length; i++) { console.log(Collection[0])%>
-                        <div class="col-12 col-md-6 col-lg-4">
-                            <div class="card border-primary my-4" style="min-width: 250px; max-width: 250px;">
-                                <img src="<%= Collection[i].collectionImage %>" class="card-img-top">
-                                <div class="card-body text-center" style="height: 175px">
-                                    <h5 class="card-title pt-3"> <%= Collection[i].collectionName %></h5>
-                                    <form action="/collections/<%= Collection[i].id%>?_method=DELETE" method="POST">
-                                        <input class="btn btn-danger mb-3" type="submit" value="Delete Collection">
-                                    </form>
-                                    <button class="btn btn-primary mb-3" onclick="location.href='/<%=Collection[i]._id%>/edit'">Edit Collection</button>
-                                </div>
-                            </div>
-                        </div>
-                    <% 
-                    console.log(Collection[i].collectionSamples)
-                    }
-                    %>
-                </div>
-            <!-- <h1 class="title pt3">My Samples</h1>
-                <div class="row">
-                    <% for (let i = 0; i < Sample.length; i++) { %>
+                    <% for (let i = 0; i < Collection.collectionSamples.length; i++) { %>
                         <div class="col-12 col-md-6 col-lg-4">
                             <div class="card border-primary my-4" style="min-width: 350px">
                                 <div class="card-body text-center" style="height: 175px">
-                                    <h5 class="card-title pt3"> <%= Sample[i].name %> </h5>
-                                    <audio controls src="<%= Sample[i].preview %>"></audio>
-                                    <form action="/collections/<%= Sample[i].id%>?_method=DELETE" method="POST">
-                                        <input class="btn btn-danger mb-3" type="submit" value="Delete Sample">
+                                    <h5 class="card-title pt-3"> <%=Collection.collectionSamples[i].name%> </h5>
+                                    <audio controls src=" <%=Collection.collectionSamples[i].preview%> "></audio>
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Rename
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <form action="/<%=Collection._id%>/<%=Collection.collectionSamples[i]._id%>?_method=PUT" method="POST">
+                                                    <input class="mb-2 m-3" type="text" name="name" value="<%=Collection.collectionSamples[i].name%>"/><br/>
+                                                    <input class="dropdown-item" type="submit" value="Submit"/> 
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <button class="btn btn-primary mb-3" onclick="location.href=''">Rename</button>
+                                    <button class="btn btn-primary mb-3" onclick="location.href=''">Move</button>
+                                    <form action="/<%=Collection._id%>/<%=Collection.collectionSamples[i]._id%>?_method=DELETE" method="POST">
+                                        <input class="btn btn-danger mb-3" type="submit" value="Delete">
                                     </form>
                                 </div>
                             </div>
                         </div>
                     <% } %>
-                </div> -->
+                </div>
         </div>
+
     </body>
     <script>
 
         $(()=> {
             
-            $('#navSearch').on('submit', (event) => {
-
-                event.preventDefault();
-                window.location.href = "/"
-
-                // Variable to Store User Input in Search Box
-                const userInput = $('input[type="text"]').val();
-                console.log(userInput)
-                
-            })
-
-            // Stop Audio When New One Plays [credit to HoRn on stackOverflow]
-            document.addEventListener('play', function(e) {
+        // Stop Audio When New One Plays [credit to HoRn on stackOverflow]
+        document.addEventListener('play', function(e) {
             let audios = document.getElementsByTagName('audio');
     
                 for (let i = 0; i < audios.length; i++) {

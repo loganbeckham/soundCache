@@ -1,6 +1,6 @@
 $(()=> {
     
-    // Carry JSON Variable over from EJS file https://stackoverflow.com/questions/46539106/accessing-passed-ejs-variable-in-javascript-file
+    // Carry JSON Variable over from EJS file src: https://stackoverflow.com/questions/46539106/accessing-passed-ejs-variable-in-javascript-file
     let Collection = JSON.parse($('#variableJSON').text());
     $('#variableJSON').remove();
 
@@ -31,13 +31,13 @@ $(()=> {
                     const $cardName = $('<h5>').addClass('card-title pt-3')
                     const $cardPreview = $('<audio controls>')
 
-                    // Create Form Elements with Hidden Data Values
+                    // Create 'Add to Collection' Drop Down Menu
                     const $dropDiv = $('<div>').addClass('dropdown')
                     const $ul = $('<ul>').addClass('dropdown-menu').attr('aria-labelledby', 'dropdownMenuButton1')
                     const $dropButton = $('<button>').addClass('btn btn-secondary dropdown-toggle').attr('type', 'button').attr('id', 'dropdownMenuButton1').attr('data-bs-toggle', 'dropdown').attr('aria-expanded', 'false').text('Add to Collection')
 
 
-                    // Create Dropdown Menu Element for each
+                    // Create Drop Down Menu Form for Each Existing Collection 
                     for (let x = 0; x < Collection.length; x++) {
                         const $li = $('<li>')
                         const $putForm = $('<form>').attr('action', `/addTo/${Collection[x]._id}?_method=PUT`).attr('method', 'POST')
@@ -48,28 +48,18 @@ $(()=> {
                         $li.append($putForm)
                         $ul.append($li)
                         $dropDiv.append($dropButton)
-
-                        // $addToButton.on('click', () => {
-                        //     Collection[x].collectionSamples.push(
-                        //         {
-                        //             name: `${data.results[i].name}`,
-                        //             preview: `${data.results[i].previews["preview-hq-mp3"]}`
-                        //         }
-                        //     )
-                        //     console.log(Collection[x])
-                        // })
                     }
 
 
-                    // Append All Elements to DOM
+                    // Append Drop Menus to Cards / Cards to Card-Container / Card-Container to Container
                     $dropDiv.append($ul)
                     $cardBody.append($cardName, $cardPreview, $dropDiv)
-                    // $postForm.append($postName, $postPreview, $addBtn)
+
                     $card.append($cardBody)
                     $col.append($card)
                     $('.row').append($col)
 
-                    // Display Name and Preview for Each Element
+                    // Set Name and Preview for Each Result
                     $cardName.text(data.results[i].name)
                     $cardPreview.attr("src", data.results[i].previews["preview-hq-mp3"])
                 }
@@ -98,10 +88,4 @@ $(()=> {
         }
     }, true);
 
-    // Export Collection Array
-
 })
-
-
-
-// $('#name').html(data.results[0].name).text(data.results[0].name);

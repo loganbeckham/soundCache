@@ -6,24 +6,39 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser')
+const session = require('express-session')
 const methodOverride = require('method-override')
+
+require('dotenv').config()
+
+app.use(express.static('public'));
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
+app.use(methodOverride('_method'));
+app.use(
+	session({
+	  secret: process.env.SECRET, //a random string do not copy this value or your stuff will get hacked
+	  resave: false, // default more info: https://www.npmjs.com/package/express-session#resave
+	  saveUninitialized: false // default  more info: https://www.npmjs.com/package/express-session#resave
+	})
+  )
+
+const userController = require('./controllers/users_controller.js')
+app.use('/users', userController)
+
+const sessionsController = require('./controllers/sessions_controller.js')
+app.use('/sessions', sessionsController)
 
 
 // =======================================
 //              DATABASE
 // =======================================
 const Sample = require('./models/mySamples.js');
-const Collection = require('./models/myCollections.js')
-
+const Collection = require('./models/myCollections.js');
 
 // =======================================
 //              ROUTES
 // =======================================
-
-app.use(express.static('public'));
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
-app.use(methodOverride('_method'));
 
 
 ////////////////////
@@ -40,7 +55,7 @@ app.use(methodOverride('_method'));
 // create collections
 app.post('/create', (req, res) => {
 	Collection.create(req.body, (err, savedCollection) => {
-		res.redirect('/collection')
+		res.redirect('/collections')
 	})
 })
 
@@ -59,7 +74,7 @@ app.put('/addTo/:id', (req, res) => {
 			},
 		},
 	}, {new:true}, (err, updatedModel) => {
-		res.redirect('/collections')
+		res.redirect('/')
 	})
 })
 
@@ -70,6 +85,28 @@ app.put('/:id', (req, res) => {
 	})
 })
 
+// rename sample
+app.put('/:id/:index', (req, res) => {
+	Collection.findByIdAndUpdate(
+		{
+			_id: req.params.id,
+			collectionSamples: 
+				{
+					_id: req.params.index
+				},
+		},
+		{
+			$set: {
+				'collectionSamples': {
+					name: req.body.name,
+				}
+			}
+		}, {new: true}, (err, updatedModel) => {
+			res.redirect(`/${req.params.id}`)
+		}
+	)
+})
+
 
 ////////////////////
 // GET ROUTES
@@ -78,38 +115,46 @@ app.put('/:id', (req, res) => {
 // HOMEPAGE
 app.get('/', (req, res)=>{
 	Collection.find({}, (err,collectionList) => {
-		res.render('index.ejs',
+		res.render('homepage.ejs',
 			{
-				Collection: collectionList
+				Collection: collectionList,
+  				currentUser: req.session.currentUser
 			}
 		)
 	})
 })
 
-// CACHE
-app.get('/collections', getSamples, getCollections, renderForm) 
-
-function getSamples(req, res, next) {
-	Sample.find({}, (err, sampleList) => {
-		res.locals.Sample = sampleList;
-		next();
-	});
-};
-
-function getCollections(req, res, next) {
+// COLLECTIONS
+app.get('/collections', (req, res) => {
 	Collection.find({}, (err, collectionList) => {
-		res.locals.Collection = collectionList;
-		next();
-	});
-};
-
-function renderForm(req, res) {
-	res.render('show.ejs');
-}
+		res.render('collections.ejs',
+			{
+				Collection: collectionList,
+				currentUser: req.session.currentUser
+			}
+		)
+	})
+})
 
 // CREATE COLLECTION
 app.get('/create', (req, res) => {
-	res.render('create.ejs');
+	res.render('create.ejs',
+	{
+		currentUser: req.session.currentUser
+	})
+})
+
+// SHOW COLLECTION
+app.get('/:id', (req, res) => {
+	Collection.findById(req.params.id, (err, thisCollection) => {
+		res.render(
+			'show.ejs',
+			{
+				Collection: thisCollection,
+				currentUser: req.session.currentUser
+			}
+		)
+	})
 })
 
 // EDIT COLLECTION
@@ -117,7 +162,8 @@ app.get('/:id/edit', (req, res) => {
 	Collection.findById(req.params.id, (err, thisCollection) => {
 		res.render('edit.ejs',
 		{
-			Collection: thisCollection
+			Collection: thisCollection,
+			currentUser: req.session.currentUser
 		})
 	})
 })
@@ -129,9 +175,22 @@ app.get('/:id/edit', (req, res) => {
 
 // DELETE COLLECTION
 app.delete('/collections/:id', (req, res) => {
-    Sample.findByIdAndRemove(req.params.id, (err, data) => {
+    Collection.findByIdAndRemove(req.params.id, (err, data) => {
         res.redirect('/collections');
     });
+})
+
+// DELETE SAMPLE FROM COLLECTION
+app.delete('/:id/:index', (req, res) => {
+	Collection.findByIdAndUpdate(req.params.id, {
+		$pull: {
+			'collectionSamples': {
+				_id: req.params.index
+			},
+		},
+	}, {new: true}, (err, updateModel) => {
+		res.redirect(`/${req.params.id}`)
+	})
 })
 
 
@@ -140,11 +199,12 @@ app.delete('/collections/:id', (req, res) => {
 //              SERVER
 // =======================================
 
-mongoose.connect('mongodb+srv://student:uxatSYGYAR8JKlrC@cluster0.aaluezz.mongodb.net/?retryWrites=true&w=majority', () => {
+const mongodbURI = process.env.MONGODBURI
+
+mongoose.connect(mongodbURI, () => {
     console.log('connected to mongo');
 })
 
-let PORT = 3000;
 if(process.env.PORT){
 	PORT = process.env.PORT
 }

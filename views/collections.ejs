@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <%- include ('../partials/head.ejs') %>
+    </head>
+    <body>
+        <%- include ('../partials/nav.ejs') %>
+        <div class="container">
+            <!-- <h1 class="title pt-3">My Collections</h1> -->
+
+            <!-- Add Collection Button -->
+            <button class="btn btn-info p-2 mt-4 ml-3" style="min-width: 100px;" onclick="location.href='/create'">Add Collection</button>
+                
+                <!-- Generate Card for Each Collection -->
+                <div class="row">
+                    <% for (let i = 0; i < Collection.length; i++) {%>
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card border-primary my-4" style="min-width: 250px; max-width: 250px;">
+                                <a href="/<%=Collection[i]._id%>"> <img src="<%= Collection[i].collectionImage %>" class="card-img-top"></a>
+                                <div class="card-body text-center" style="height: 175px">
+                                    <a href="/<%=Collection[i]._id%>" style="text-decoration: none; color: black;"><h5 class="card-title pt-3"> <%= Collection[i].collectionName %></h5></a>
+                                    <form action="/collections/<%=Collection[i]._id%>?_method=DELETE" method="POST">
+                                        <input class="btn btn-danger mb-3" type="submit" value="Delete Collection">
+                                    </form>
+                                    <button class="btn btn-primary mb-3" onclick="location.href='/<%=Collection[i]._id%>/edit'">Edit Collection</button>
+                                </div>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+        </div>
+    </body>
+</html>
